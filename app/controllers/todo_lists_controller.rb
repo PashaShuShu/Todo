@@ -1,5 +1,10 @@
 class TodoListsController < ApplicationController
+
+  
+
   before_action :set_todo_list, only: [:show, :edit, :update, :destroy]
+
+ 
 
   # GET /todo_lists
   # GET /todo_lists.json
@@ -54,11 +59,20 @@ class TodoListsController < ApplicationController
   # DELETE /todo_lists/1
   # DELETE /todo_lists/1.json
   def destroy
+    
+    @todo_items = TodoItem.where(todo_list_id: @todo_list.id)
+    @todo_items.each do |todo_item|
+      todo_item.destroy
+    end
+    
     @todo_list.destroy
+    
+
     respond_to do |format|
       format.html { redirect_to root_url, notice: 'Todo list was successfully destroyed.' }
       format.json { head :no_content }
     end
+    
   end
 
   private
